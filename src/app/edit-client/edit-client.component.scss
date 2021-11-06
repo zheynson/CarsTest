@@ -1,0 +1,73 @@
+.all-title {
+  max-width: 270px;
+}
+
+.user-name-input input {
+  border-radius: 8px;
+  border: 1px solid grey;
+}
+
+.car {
+  max-width: 850px;
+}
+
+.car input {
+  padding: 5px;
+  border-radius: 8px;
+  border: solid 1px grey
+}
+
+.btn-delete{
+  margin-left: 5px;
+}
+
+.btn-back {
+  border: 1px solid grey;
+  transition: 0.3s ease-out;
+  &:hover {
+    background-color: grey;
+    border: 1px solid black;
+    color: white;
+  }
+}
+
+.btn-add-car {
+  border: 1px solid black;
+  background-color: cornflowerblue;
+  color: #fff;
+}
+
+.btn-save {
+  border: 1px solid black;
+  background-color: cornflowerblue;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.save-png{
+  height: 25px;
+  margin-right: 4px;
+}
+
+.year-error {
+  position: absolute;
+  right: 41.3%;
+  top: 52%;
+  color: red;
+}
+
+
+
+input {
+  &.ng-invalid.ng-touched {
+    border: 1px solid red !important;
+    transition: 1.6s;
+  }
+
+  &.ng-valid.ng-touched {
+    border: 1px solid green !important;
+    transition: 1.6s;
+  }
+}
+
+

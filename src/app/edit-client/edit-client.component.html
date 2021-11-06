@@ -1,0 +1,84 @@
+<div class="container mt-5">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div class="all-title">
+      <div class="user-name-input d-flex justify-content-between">
+        <label for="1">Фамилия</label>
+        <input id="1" type="text" name="last-name" formControlName="lastNameControl" >
+      </div>
+
+      <div class="user-name-input d-flex justify-content-between mt-2">
+        <label for="2">Имя</label>
+        <input id="2" type="text" name="first-name" formControlName="firstNameControl">
+      </div>
+
+      <div class="user-name-input d-flex justify-content-between mt-2">
+        <label for="3">Отчество</label>
+        <input id="3" type="text" name="father-name" formControlName="fatherNameControl">
+      </div>
+    </div>
+
+    <div class="all-cars">
+      <h1>Автомобили</h1>
+
+      <div class="cars-wrapper mt-5">
+
+        <div class="title-input d-flex justify-content-between col-lg-6">
+          <div class="number"><h5>Номер</h5></div>
+          <div class="number"><h5>Марка</h5></div>
+          <div class="number"><h5>Модель</h5></div>
+          <div class="number"><h5>Год</h5></div>
+        </div>
+
+        <div class="car d-flex justify-content-between align-items-center">
+          <div class="car-number">
+            <input type="text" name="car-number" formControlName="carNumberControl">
+          </div>
+
+          <div class="car-mark">
+            <input type="text" name="car-mark" formControlName="carMarkControl">
+          </div>
+
+          <div class="car-model">
+            <input type="text" name="car-model" formControlName="carModelControl">
+          </div>
+
+          <div class="car-year">
+            <input type="number" name="car-year" formControlName="carYearControl">
+          </div>
+          <div *ngIf="form.get('carYearControl').invalid && form.get('carYearControl').touched"  class="validation">
+              <small *ngIf="form.get('carYearControl').errors.required" class="year-error">
+                Поле не может быть пустым
+              </small>
+              <small *ngIf="form.get('carYearControl').errors.min || form.get('carYearControl').errors.max " class="year-error">
+                Введите год в промежутке '1998 - 2021'
+              </small>
+
+          </div>
+
+          <button [disabled]="route.snapshot.routeConfig.path === 'prev/:id'" type="button" class="btn btn-danger btn-delete">
+            <img src="assets/trash.png" alt="">
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons-edit mt-3">
+
+      <div class="add-car-btn">
+        <button [disabled]="route.snapshot.routeConfig.path === 'prev/:id'" type="button" class="btn btn-add-car"><img src="assets/plus.png" alt="">Добавить автомобиль</button>
+      </div>
+
+      <div class="buttons-edit-floor mt-3">
+
+        <button type="submit" [disabled]="form.invalid || route.snapshot.routeConfig.path === 'prev/:id'"  class="btn btn-save"> <img class="save-png" src="assets/save.png" alt="">Сохранить</button>
+
+        <a class="btn btn-back" routerLink="/">
+          <img src="assets/back.png" alt="">Назад
+        </a>
+
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="all-panel">
+
+    <h1 class="title">Владельцы автомобилей</h1>
+
+    <div class="buttons">
+      <a class="add-user btn" routerLink="/edit"><img class="img" src="assets/plus.png" alt="">Добавить</a>
+      <button [disabled]="!userId || !todos.length" [routerLink]="['/prev',userId ]"  class="sea-user btn btn-back"><img class="img" src="assets/yey.png" alt="">Просмотр</button>
+      <button [disabled]="!userId || !todos.length" [routerLink]="['/edit',userId ]" class="refactoring-user btn"><img class="img" src="assets/book.png" alt="">Редактирвоать</button>
+      <button [disabled]="!userId || !todos.length" (click)="delete(userId)" class="delete-user btn"><img class="img" src="assets/trash.png" alt="">Удалить</button>
+    </div>
+
+    <div class="table">
+
+      <table border="1" bgcolor="#D4FAF7" class="col-lg-12">
+
+        <tr>
+          <th>Фамилия</th>
+          <th>Имя</th>
+          <th>Отчевство</th>
+          <th>Количество автомобилей</th>
+        </tr>
+
+        <tr class="user-row" (click)="userId = t.id" *ngFor="let t of todos">
+          <td>{{t.lastName}}</td>
+          <td>{{t.firstName}}</td>
+          <td>{{t.fatherName}}</td>
+          <td>{{t.cars.length}}</td>
+        </tr>
+
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+

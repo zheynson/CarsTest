@@ -1,0 +1,65 @@
+.all-panel {
+  padding-top: 45px;
+}
+
+.title {
+  text-align: center;
+}
+
+.buttons {
+  margin-top: 30px;
+}
+
+.btn + .btn {
+  margin-left: 9px;
+}
+
+.add-user + .sea-user {
+  margin-left: 100px;
+}
+
+.btn {
+  border: 1px solid black;
+}
+
+.img {
+  height:  25px;
+  margin-right: 4px;
+}
+
+.add-user {
+  background-color: #67E693;
+}
+
+.delete-user {
+  background-color: #FF6863;
+}
+
+.table {
+  margin-top: 40px;
+}
+
+th {
+  border: 2px solid black;
+}
+
+td {
+  border-right: 1px solid black;
+}
+
+.refactoring-user:hover, .sea-user:hover {
+  background-color: #D4FAF7;
+}
+
+.refactoring-user:active, .sea-user:active {
+ background-color: #ffffff;
+}
+
+.user-row:hover {
+  background-color: rgba(108, 210, 103, 0.65);
+}
+
+
+
+
+
