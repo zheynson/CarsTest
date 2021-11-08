@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CarOwner} from '../models/car-owner';
 import {SearchService} from '../services/search.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -10,11 +10,9 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./edit-client.component.scss']
 })
 export class EditClientComponent implements OnInit {
-
-  public prov = false;
-
   private editUser: CarOwner;
 
+  array: any = [];
 
   constructor(private service: SearchService, private router: Router, public route: ActivatedRoute) {
   }
@@ -35,47 +33,30 @@ export class EditClientComponent implements OnInit {
         Validators.required,
         Validators.minLength(2)]),
 
-      carNumberControl: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.pattern(/^[QWERTYUIOPASDFGHJKLZXCVBNM]{2}\d{4}(?<!000)[QWERTYUIOPASDFGHJKLZXCVBNM]{2}$/ui),
-      ]),
 
-      carMarkControl: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2)]),
-
-      carModelControl: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2)]),
-
-      carYearControl: new FormControl('', [
-        Validators.required,
-        Validators.min(1998),
-        Validators.max(2021)])
+      array: new FormArray([])
     });
 
-    console.log(this.route);
+    if (!this.route.snapshot.params.id) {
+      this.array = this.form.get('array') as FormArray;
+      this.addCar();
+    } else {
+      this.array = this.form.get('array') as FormArray;
+    }
 
     if (this.route.snapshot.params.id) {
       this.service.searchUser(this.route.snapshot.params.id).subscribe((t) => {
         this.form.controls.lastNameControl.setValue(t.lastName);
         this.form.controls.firstNameControl.setValue(t.firstName);
         this.form.controls.fatherNameControl.setValue(t.fatherName);
-        this.form.controls.carNumberControl.setValue(t.cars[0].stateNumber);
-        this.form.controls.carMarkControl.setValue(t.cars[0].modelName);
-        this.form.controls.carModelControl.setValue(t.cars[0].brandName);
-        this.form.controls.carYearControl.setValue(t.cars[0].yearProduction);
+
+        t.cars.forEach(item => {
+          this.addCar(item.stateNumber, item.brandName, item.modelName, item.yearProduction);
+        });
 
         if (this.route.snapshot.routeConfig.path === 'prev/:id') {
-          this.form.controls.lastNameControl.disable();
-          this.form.controls.firstNameControl.disable();
-          this.form.controls.fatherNameControl.disable();
-          this.form.controls.carNumberControl.disable();
-          this.form.controls.carMarkControl.disable();
-          this.form.controls.carModelControl.disable();
-          this.form.controls.carYearControl.disable();
-          console.log(this.route);
+          this.form.disable();
+          this.array.disable();
         }
 
         this.editUser = t;
@@ -83,21 +64,52 @@ export class EditClientComponent implements OnInit {
     }
   }
 
+  addCar(carNumber = '', carMark = '', carModel = '', carYear: any = ''): any {
+    const car: any = new FormGroup({
+      carNumberControl: new FormControl(carNumber, [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(/^[QWERTYUIOPASDFGHJKLZXCVBNM]{2}\d{4}(?<!000)[QWERTYUIOPASDFGHJKLZXCVBNM]{2}$/ui),
+      ]),
+
+      carMarkControl: new FormControl(carMark, [
+        Validators.required,
+        Validators.minLength(2)]),
+
+      carModelControl: new FormControl(carModel, [
+        Validators.required,
+        Validators.minLength(2)]),
+
+      carYearControl: new FormControl(carYear, [
+        Validators.required,
+        Validators.min(1998),
+        Validators.max(2021)])
+    });
+    this.array.push(car);
+  }
+
+  deleteCar(id: number): void {
+    this.array.removeAt(id);
+  }
+
   submit(): void {
     this.router.navigate(['/']);
+
+    const cars = this.array.value.map(item => {
+      return {
+        stateNumber: item.carNumberControl,
+        brandName: item.carMarkControl,
+        modelName: item.carModelControl,
+        yearProduction: item.carYearControl,
+      };
+    });
 
     const user: CarOwner = {
       id: +this.route.snapshot.params.id,
       firstName: this.form.value.firstNameControl,
       lastName: this.form.value.lastNameControl,
       fatherName: this.form.value.fatherNameControl,
-      cars: [
-        {
-          stateNumber: this.form.value.carNumberControl,
-          brandName: this.form.value.carMarkControl,
-          modelName: this.form.value.carModelControl,
-          yearProduction: this.form.value.carYearControl
-        }]
+      cars: cars
     };
 
     if (!this.route.snapshot.params.id) {

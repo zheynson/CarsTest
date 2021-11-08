@@ -30,7 +30,10 @@
           <div class="number"><h5>Год</h5></div>
         </div>
 
-        <div class="car d-flex justify-content-between align-items-center">
+        <ng-container formArrayName="array">
+        <div *ngFor="let _ of array.controls; index as i" class="car d-flex justify-content-between align-items-center">
+
+        <ng-container [formGroupName]="i">
           <div class="car-number">
             <input type="text" name="car-number" formControlName="carNumberControl">
           </div>
@@ -46,28 +49,33 @@
           <div class="car-year">
             <input type="number" name="car-year" formControlName="carYearControl">
           </div>
-          <div *ngIf="form.get('carYearControl').invalid && form.get('carYearControl').touched"  class="validation">
-              <small *ngIf="form.get('carYearControl').errors.required" class="year-error">
+          <div *ngIf="array.controls[i].get('carYearControl').invalid && array.controls[i].get('carYearControl').touched" class="validation">
+              <small *ngIf="array.controls[i].get('carYearControl').errors.required" class="year-error">
                 Поле не может быть пустым
               </small>
-              <small *ngIf="form.get('carYearControl').errors.min || form.get('carYearControl').errors.max " class="year-error">
+              <small *ngIf="array.controls[i].get('carYearControl').errors.min || array.controls[i].get('carYearControl').errors.max " class="year-error">
                 Введите год в промежутке '1998 - 2021'
               </small>
 
           </div>
 
-          <button [disabled]="route.snapshot.routeConfig.path === 'prev/:id'" type="button" class="btn btn-danger btn-delete">
+          <button (click)="deleteCar(i)" [disabled]="route.snapshot.routeConfig.path === 'prev/:id'" type="button" class="btn btn-danger btn-delete">
             <img src="assets/trash.png" alt="">
           </button>
 
+        </ng-container>
+
         </div>
+
+        </ng-container>
+
       </div>
     </div>
 
     <div class="buttons-edit mt-3">
 
       <div class="add-car-btn">
-        <button [disabled]="route.snapshot.routeConfig.path === 'prev/:id'" type="button" class="btn btn-add-car"><img src="assets/plus.png" alt="">Добавить автомобиль</button>
+        <button (click)="addCar()" [disabled]="route.snapshot.routeConfig.path === 'prev/:id'" type="button" class="btn btn-add-car"><img src="assets/plus.png" alt="">Добавить автомобиль</button>
       </div>
 
       <div class="buttons-edit-floor mt-3">
